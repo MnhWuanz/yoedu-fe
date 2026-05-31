@@ -1,0 +1,86 @@
+import { createBrowserRouter } from 'react-router-dom';
+
+import AppInit from '../init/AppInit';
+
+import AuthLayout from '../layouts/AuthLayout';
+
+import MainLayout from '@/app/layouts/MainLayout';
+
+import ProtectedRoute from './ProtectedRoute';
+import AuthLogin from '@/features/auth/pages/AuthLogin';
+
+// import LoginPage from '@/features/auth/pages/LoginPage';
+// import RegisterPage from '@/features/auth/pages/RegisterPage';
+// import StudentPage from '@/features/students/pages/StudentPage';
+// import UserProfilePage from '@/features/users/pages/UserProfilePage';
+// import TeacherPage from '@/features/teachers/pages/TeacherPage';
+// import CoursePage from '@/features/courses/pages/CoursePage';
+// import DashboardPage from '@/features/dashboard/pages/Dashboard';
+// import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
+
+export const router = createBrowserRouter([
+  /******************** AUTH *********************/
+  {
+    element: <ProtectedRoute requireAuth={false} />,
+    children: [
+      {
+        path: '/auth',
+        element: <AuthLayout />,
+        children: [
+          {
+            path: 'login',
+            element: <AuthLogin />,
+          },
+          {
+            path: 'register',
+            // element: <RegisterPage />,
+            element: <div>Register Page</div>,
+          },
+        ],
+      },
+    ],
+  
+  },
+
+
+  /******************** MAIN *********************/
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: '/',
+        element: (
+          <AppInit>
+            <MainLayout />
+          </AppInit>
+        ),
+        children: [
+          {
+            index: true,
+            // element: <DashboardPage />,
+          },
+          {
+            path: 'profile',
+            // element: <UserProfilePage />,
+          },
+          {
+            path: 'students',
+            // element: <StudentPage />,
+          },
+          {
+            path: 'teachers',
+            // element: <TeacherPage />,
+          },
+          {
+            path: 'courses',
+            // element: <CoursePage />,
+          },
+          {
+            path: 'enrollments',
+            // element: <EnrollmentPage />,
+          },
+        ],
+      },
+    ],
+  },
+]);
