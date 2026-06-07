@@ -1,4 +1,4 @@
-import { loginThunk } from '@/features/auth/store/auth-thunk';
+import { loginThunk, registerThunk } from '@/features/auth/store/auth-thunk';
 import type { User } from '@/features/users/types/user-type';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
@@ -37,6 +37,20 @@ export const authSlice=createSlice({
             localStorage.setItem("token",action.payload.accessToken);
         })
         .addCase(loginThunk.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.payload as string;
+        })
+        .addCase(registerThunk.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(registerThunk.fulfilled,(state,action)=>{
+            state.loading=false;
+            state.user=action.payload.user;
+            state.accessToken=action.payload.accessToken;
+            localStorage.setItem("token",action.payload.accessToken);
+        })
+        .addCase(registerThunk.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.payload as string;
         })

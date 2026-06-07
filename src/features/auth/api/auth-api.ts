@@ -1,4 +1,4 @@
-import type { LoginPayload } from "@/features/auth/types/auth-type";
+import type { LoginPayload, RegisterPayload } from "@/features/auth/types/auth-type";
 import { axiosCilent } from "@/shared/lib/axios";
 
 export const login = async (payload: LoginPayload) => {
@@ -12,4 +12,13 @@ export const login = async (payload: LoginPayload) => {
 };
 export const getMe=()=>{
     return axiosCilent.get("/users/me")
+}
+export const register = (payload: Omit<RegisterPayload, 'repassword'>) => {
+  try {    
+    const response = axiosCilent.post("/auth/register", payload); 
+    return response;
+    } catch (error) {   
+      console.error("Register error:", error);
+    throw error;
+  }
 }

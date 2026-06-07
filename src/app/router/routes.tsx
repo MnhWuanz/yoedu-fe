@@ -8,6 +8,7 @@ import MainLayout from '@/app/layouts/MainLayout';
 
 import ProtectedRoute from './ProtectedRoute';
 import AuthLogin from '@/features/auth/pages/AuthLogin';
+import AuthRegister from '@/features/auth/pages/AuthRegister';
 
 // import LoginPage from '@/features/auth/pages/LoginPage';
 // import RegisterPage from '@/features/auth/pages/RegisterPage';
@@ -33,8 +34,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'register',
-            // element: <RegisterPage />,
-            element: <div>Register Page</div>,
+            element: <AuthRegister />,
           },
         ],
       },
