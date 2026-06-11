@@ -1,5 +1,6 @@
 import { getDashboardData } from "@/features/dashboard/api/dashboard-api";
 import RecentActivity from "@/features/dashboard/components/recent-activity";
+import SkeletonCard from "@/features/dashboard/components/skeleton";
 import StatCard from "@/features/dashboard/components/stat-card";
 import TodayClasses from "@/features/dashboard/components/today-classes";
 import { useQuery } from "@tanstack/react-query";
@@ -9,8 +10,8 @@ const mapColor = ['green', 'blue', 'purple', 'red'];
 
 export default function DashBoardPage() {
   const { getDashboard } = getDashboardData;
-  const query = useQuery({ queryKey: ['dashboard'], queryFn: getDashboard });
-  console.log('Dashboard data:', query.data);
+  const {data,isLoading,isFetching} = useQuery({ queryKey: ['dashboard'], queryFn: getDashboard });
+  console.log('Dashboard data:',  data);
   return (
     <div className="flex flex-col gap-6">
       {/* Title */}
@@ -21,21 +22,27 @@ export default function DashBoardPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
-        {query.data?.statData.map((item, index) => (
-          <StatCard
-            key={index}
-            title={item.title}
+        {isLoading  ? (
+          // Hiển thị skeleton khi đang tải dữ liệu
+          Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))
+        ) : (
+          data!.statData.map((item, index) => (
+            <StatCard
+              key={index}
+              title={item.title}
             value={item.value}
             extra={item.extra}
             color={mapColor[index % mapColor.length]}
           />
-        ))}
-      </div>
+        )))}
+      </div>  
 
       {/* Bottom */}
       <div className="grid grid-cols-2 gap-4">
-        <RecentActivity data={query.data?.recentActivityData || []} />
-        <TodayClasses data={query.data?.todayClasses || []} />
+        <RecentActivity data={data?.recentActivityData || []} />
+        <TodayClasses data={data?.todayClasses || []} />
       </div>
     </div>
   );
