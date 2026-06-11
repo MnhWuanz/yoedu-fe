@@ -1,6 +1,5 @@
+import { FORMAT_DATE, FORMAT_TIME } from '@/shared/constants/format-date';
 import dayjs, { Dayjs } from 'dayjs';
-import { FORMAT_DATE, FORMAT_TIME } from '../constants/format-date';
-
 /**
  * Convert ISO string -> dayjs object
  * dùng cho DatePicker setFieldsValue

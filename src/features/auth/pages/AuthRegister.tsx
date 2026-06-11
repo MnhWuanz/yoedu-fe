@@ -29,7 +29,6 @@ export default function AuthRegister() {
             return;
         }
         try {
-            console.log(values);
             await dispatch(registerThunk(values)).unwrap();
             showNotification('success', 'Đăng ký thành công');
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

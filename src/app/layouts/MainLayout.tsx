@@ -16,7 +16,6 @@ const MainLayout = () => {
 
       <Layout>
         <AppHeader collapsed={collapsed} setCollapsed={setCollapsed} />
-
         <Content className="p-6 overflow-auto">
           <Outlet />
         </Content>

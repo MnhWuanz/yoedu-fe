@@ -1,17 +1,16 @@
-import { loginThunk, registerThunk } from '@/features/auth/store/auth-thunk';
+import { getMeThunk, loginThunk, registerThunk } from '@/features/auth/store/auth-thunk';
 import type { User } from '@/features/users/types/user-type';
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 export interface AuthState {
   user: User | null;
   loading: boolean;
-  accessToken: string | null;
+    initialized:boolean;
   error: string | null;
 }
 const initialState: AuthState = {
     user: null,
     loading: false,
-    accessToken: localStorage.getItem("token"),
+    initialized:false,
     error: null,
 }
 export const authSlice=createSlice({
@@ -20,9 +19,12 @@ export const authSlice=createSlice({
     reducers:{
         logout:(state)=>{
             state.user=null;
-            state.accessToken=null;
-            localStorage.removeItem("token");
-        }
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+        },
+         markInitialized: (state) => {
+      state.initialized = true;
+    },
     },
     extraReducers:(builder)=>{
         builder
@@ -33,8 +35,8 @@ export const authSlice=createSlice({
         .addCase(loginThunk.fulfilled,(state,action)=>{
             state.loading=false;
             state.user=action.payload.user;
-            state.accessToken=action.payload.accessToken;
-            localStorage.setItem("token",action.payload.accessToken);
+            localStorage.setItem("accessToken",action.payload.accessToken);
+            localStorage.setItem("refreshToken",action.payload.refreshToken);
         })
         .addCase(loginThunk.rejected,(state,action)=>{
             state.loading=false;
@@ -47,15 +49,32 @@ export const authSlice=createSlice({
         .addCase(registerThunk.fulfilled,(state,action)=>{
             state.loading=false;
             state.user=action.payload.user;
-            state.accessToken=action.payload.accessToken;
-            localStorage.setItem("token",action.payload.accessToken);
+            localStorage.setItem("accessToken",action.payload.accessToken);
+            localStorage.setItem("refreshToken",action.payload.refreshToken);
         })
         .addCase(registerThunk.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.payload as string;
         })
+         .addCase(getMeThunk.pending,(state)=>{
+             state.loading=true;
+            state.error=null;
+        })
+        .addCase(getMeThunk.fulfilled,(state,action)=>{
+            state.loading=false;
+
+            state.user=action.payload;
+            state.initialized=true;
+        })
+        .addCase(getMeThunk.rejected,(state,action)=>{
+            state.user=null;
+            state.loading=false;
+            state.error=action.payload as string;
+            state.initialized=true;
+        })
+        
     }
 })
-export const { logout } = authSlice.actions;
+export const { logout, markInitialized } = authSlice.actions;
 
 export default authSlice.reducer;

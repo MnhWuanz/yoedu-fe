@@ -9,15 +9,9 @@ import MainLayout from '@/app/layouts/MainLayout';
 import ProtectedRoute from './ProtectedRoute';
 import AuthLogin from '@/features/auth/pages/AuthLogin';
 import AuthRegister from '@/features/auth/pages/AuthRegister';
+import DashBoardPage from '@/features/dashboard/pages/DashBoard';
 
-// import LoginPage from '@/features/auth/pages/LoginPage';
-// import RegisterPage from '@/features/auth/pages/RegisterPage';
-// import StudentPage from '@/features/students/pages/StudentPage';
-// import UserProfilePage from '@/features/users/pages/UserProfilePage';
-// import TeacherPage from '@/features/teachers/pages/TeacherPage';
-// import CoursePage from '@/features/courses/pages/CoursePage';
-// import DashboardPage from '@/features/dashboard/pages/Dashboard';
-// import EnrollmentPage from '@/features/enrollments/pages/EnrollmentPage';
+
 
 export const router = createBrowserRouter([
   /******************** AUTH *********************/
@@ -50,14 +44,12 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: (
-          <AppInit>
             <MainLayout />
-          </AppInit>
         ),
         children: [
           {
             index: true,
-            // element: <DashboardPage />,
+            element: <DashBoardPage />,
           },
           {
             path: 'profile',
